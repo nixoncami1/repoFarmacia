@@ -1,0 +1,32 @@
+{%extends "master.html"%} {%block contenido%}
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default">
+
+            <div class="panel-heading">
+                <p>Enfermedades</p>
+            </div>
+            <div class="panel-body">
+                <a href="../" class="btn btn-success">Regresar</a>
+                <br>
+            </div>
+
+            <table class="table">
+                <tr>
+                    <td><b>Nombre</b></td>
+                    <td><b>Medicamento recomendado</b></td>
+                </tr>
+                {%for p in enfermedades%}
+                <tr>
+                    <td>{{p.nombre}}</td>
+                    <td>
+                        <a href="../listarMedicamento?id={{p.id}}">Ver</a>
+                    </td>
+                </tr>
+                {%endfor%}
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+{%endblock%}

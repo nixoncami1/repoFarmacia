@@ -1,0 +1,33 @@
+{%extends "master.html"%}
+{%block contenido%}
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3" >
+      <div class="panel panel-default">
+
+          <div class="panel-heading">
+              <h1><p>Donde encontrar {{medicamento.nombreComercial}}</p></h1>
+          </div>
+          <div class="panel-body">
+              <a href="/cliente" class="btn btn-success">Regresar</a>
+              <a href="../" class="btn btn-danger">Inicio</a>
+              <br>
+          </div>
+          <table class="table">
+            <tr>
+              <td><b>Nombre Comercial</b></td>
+              <td><b>Nombre Generico</b></td></tr>
+              {%for p in farmacia%}
+              <tr>
+                <td>{{p.idfarmacia.nombre}}</td>
+                <td>{{p.idfarmacia.direccion}}</td>
+              </tr>
+              {%endfor%}
+            </tr>
+          </table>
+
+
+      </div>
+
+    </div>
+  </div>
+{%endblock%}

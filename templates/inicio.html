@@ -1,0 +1,46 @@
+{%extends "master.html"%}
+{% load staticfiles %}
+{%block contenido%}
+<img src="{% static 'images2.jpg' %}" alt="" />
+{% static 'images2.jpg' %}
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      {% if mensaje %}
+      {{mensaje}}
+      {% endif %}
+      {% if user.is_authenticated == False %}
+      <h1>Iniciar sesión</h1>
+      <form id='formulario' action="" method="POST">{% csrf_token %}
+        <table class="table">
+          {{formulario}}
+        </table>
+        <br>
+        <input type="submit" class="btn btn-success btn-md" value="Ingresar">
+        <a href="/registro" class="btn btn-info">Resgistrar</a>
+      {% elif user.is_authenticated %}
+      <div class="panel panel-default">
+          <div class="panel-heading"><p>Bienvenido</p></div>
+          <div class="panel-body">
+            <h1>{{ user.userprofile.nombre | upper }}&nbsp{{user.userprofile.apellido | upper}},&nbsp{{user.userprofile.tipo}}</h1>
+          </div>
+          <div class="panel-footer">
+            <a href="salir" class="btn btn-success">Salir</a>
+            <a href="/cliente" class="btn btn-success">Enfermedades</a>
+          </div>
+      </div>
+      {%endif%}
+    </div>
+</div>
+<div class="row" id="pony">
+<script type="text/javascript">
+$(document).ready(function(){
+  map = new GMaps({
+    div: '#pony',
+    lat: -12.043333,
+    lng: -77.028333
+  });
+});
+
+</script>
+</div>
+{%endblock%}

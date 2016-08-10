@@ -1,0 +1,21 @@
+{%extends "master.html"%}
+{%block contenido%}
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3" >
+      <a href="../" class="btn btn-danger">Salir</a>
+
+      <table class="table">
+        <tr>
+          <td><b>Nombre</b></td>
+          <td><b>Sugerencia</b></td></tr>
+          {%for p in enfermedades%}
+          <tr>
+            <td>{{p.nombre}}</td>
+            <td>{{p.sugerencia}}</td>
+          </tr>
+          {%endfor%}
+        </tr>
+      </table>
+    </div>
+  </div>
+{%endblock%}
