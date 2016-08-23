@@ -1,8 +1,7 @@
 {%extends "master.html"%}
 {% load staticfiles %}
 {%block contenido%}
-<img src="{% static 'images2.jpg' %}" alt="" />
-{% static 'images2.jpg' %}
+<!-- <img src="{% static 'images2.jpg' %}" alt="" /> -->
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
       {% if mensaje %}
@@ -26,21 +25,23 @@
           <div class="panel-footer">
             <a href="salir" class="btn btn-success">Salir</a>
             <a href="/cliente" class="btn btn-success">Enfermedades</a>
+            {%if user.userprofile.tipo == "farmaceutico"%}
+            <a href="/farmaceutico" class="btn btn-success">Administrar Farmacia</a>
+            {%endif%}
           </div>
       </div>
       {%endif%}
     </div>
 </div>
-<div class="row" id="pony">
 <script type="text/javascript">
 $(document).ready(function(){
   map = new GMaps({
     div: '#pony',
-    lat: -12.043333,
-    lng: -77.028333
+    lat: -4.008516,
+    lng: -79.204857
   });
 });
-
 </script>
+<div class="row" id="pony" style="width: 500px; height: 500px;">
 </div>
 {%endblock%}

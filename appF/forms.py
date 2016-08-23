@@ -1,10 +1,34 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import farmacia, medicamento, farmacia_medicamento
 
 t_p =(
 ("cliente", "Cliente"),
 ("farmaceutico", "Farmaceutico"),
 )
+
+class RegistroMedicamentoFarmacia(forms.ModelForm):
+    class Meta:
+        model = farmacia_medicamento
+        fields = ["idfarmacia","idmedicamento"]
+
+class RegistroFarmacia(forms.ModelForm):
+    class Meta:
+        model = farmacia
+        fields = ["nombre","direccion","telefono","latitud","longitud"]
+
+class RegistroMedicamento(forms.Form):
+
+    nombreComercial= forms.CharField(max_length=40)
+    nombreGenerico= forms.CharField(max_length=50)
+    dosis= forms.CharField(max_length=20)
+    viaAplicacion = forms.CharField(max_length = 40)
+
+    def clean_nombreComercial(self):
+        nombreComercial = self.cleaned_data['nombreComercial']
+        if medicamento.objects.filter(nombreComercial=nombreComercial):
+            raise forms.ValidationError('Nombre de medicamento ya existe.')
+        return nombreComercial
 
 class RegistroUserForm(forms.Form):
 

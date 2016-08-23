@@ -1,0 +1,64 @@
+{%extends "master.html"%}
+{%block contenido%}
+<div class="row">
+  <div class="col-md-7 col-md-offset-3 page-header">
+    <h1>Farmacia&nbsp{{ Farmacia.nombre | upper }}<small>&nbspAdministración</small></h1>
+  </div>
+    <div class="col-md-7 col-md-offset-2">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <p><h3>Medicamentos</h3></p><br>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <center><h3>Seleccione una enfermedad, en caso de que no exista puede crearlo dando click <a href="/regMed?id={{Farmacia.id}}">Aquí</a></h3></center>
+                {%for m in En %}
+                <div class="col-sm-7 col-md-4">
+                  <div class="thumbnail">
+                    <!-- <img src="..." alt="..."> -->
+                    <div class="caption">
+                      <h3>{{m.nombre}}</h3>
+                      <p>{{m.nombreGenerico}}</p>
+                      <p>{{m.dosis}}</p>
+                      <p>{{m.viaAplicacion}}</p>
+                      <button type="button" onclick="" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Agregar</button>
+                    </div>
+                  </div>
+                </div>
+              {%endfor%}
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+      <a href="/inicioFarmMed?id={{Farmacia.id}}" class="btn btn-success">Regresar</a><br><br>
+      <a href="/salir" class="btn btn-danger">Salir</a>
+    </div>
+</div>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h3 class="modal-title">Debe asignar un medicamento a esta enfermedad</h3>
+      </div>
+      <div class="modal-body">
+        <select class="form-control" name = "selecEnf">
+          <option value=""></option>
+          {%for fm in medFar%}
+          <option value="{{e.id}}">{{fm.idmedicamento.nombreComercial}}</option>
+          {%endfor%}
+        </select><br><br>
+        <button type="button" class="btn btn-info" data-dismiss="modal">Cancelar</button>
+        <a href="#" id="hrefC" class="btn btn-danger">Estoy seguro</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{%endblock%}

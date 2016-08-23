@@ -1,0 +1,25 @@
+{%extends "master.html"%} {%block contenido%}
+<div class="row">
+    <div class="col-md-3 col-sm-offset-5">
+        <div class="page-header">
+            <h2>Registro Medicamento</h2>{{Farmacia.nombre}}
+        </div>
+        <form method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table>
+                {{ form }}
+            </table><br>
+            <div class="col-md-4">
+              <select class="form-control" name = "selecEnf">
+                <option value=""></option>
+                {%for e in Enfermedad%}
+                <option value="{{e.id}}">{{e.nombre}}</option>
+                {%endfor%}
+              </select><br><br>
+            </div>
+            <button type="submit" class="btn btn-primary">Registrar</button>
+            <a href="../farmaceutico" class="btn btn-danger">Atras</a>
+        </form>
+    </div>
+</div>
+{%endblock%}

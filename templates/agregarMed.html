@@ -1,0 +1,11 @@
+
+        <div class="page-header">
+          <h3>Agregar Medicamento</h3>
+        </div>
+        <form method="post" action="" enctype="multipart/form-data">
+          {% csrf_token %}
+          <table>
+            {{ form }}
+          </table><br>
+            <button type="submit" class="btn btn-primary">Registrar</button>
+        </form>

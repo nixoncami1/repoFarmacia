@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import UserProfile, enfermedad, farmacia, medicamento, persona_enfermedad, medicamento_enfermedad, farmacia_medicamento
+from .models import UserProfile, enfermedad, farmacia, medicamento, persona_enfermedad, medicamento_enfermedad, farmacia_medicamento, farmacia_persona
 
 class AdminEnfermedad(admin.ModelAdmin):
     list_display = ["__str__", "nombre", "sugerencia"]
@@ -33,6 +33,11 @@ class AdminFarmaciaMedicamento(admin.ModelAdmin):
     class Meta:
         model = farmacia_medicamento
 
+class AdminFarmaciaPersona(admin.ModelAdmin):
+    list_display = ["__str__", 'idpersona', 'idfarmacia']
+    class Meta:
+        model = farmacia_persona
+
 
 admin.site.register(UserProfile)
 admin.site.register(enfermedad, AdminEnfermedad)
@@ -41,3 +46,4 @@ admin.site.register(medicamento, AdminMedicamento)
 admin.site.register(persona_enfermedad, AdminPersonaEnfermedad)
 admin.site.register(medicamento_enfermedad, AdminMedicamentoEnfermedad)
 admin.site.register(farmacia_medicamento, AdminFarmaciaMedicamento)
+admin.site.register(farmacia_persona, AdminFarmaciaPersona)
