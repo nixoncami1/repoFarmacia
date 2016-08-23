@@ -12,7 +12,6 @@
             </div>
             <div class="panel-body">
               <div class="row">
-                <center><h3>Seleccione una enfermedad, en caso de que no exista puede crearlo dando click <a href="/regMed?id={{Farmacia.id}}">Aquí</a></h3></center>
                 {%for m in En %}
                 <div class="col-sm-7 col-md-4">
                   <div class="thumbnail">
@@ -22,12 +21,14 @@
                       <p>{{m.nombreGenerico}}</p>
                       <p>{{m.dosis}}</p>
                       <p>{{m.viaAplicacion}}</p>
-                      <button type="button" onclick="" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Agregar</button>
+                      <button type="button" class="btn btn-primary" onclick="ponerhrefAe({{m.id}})" data-toggle="modal" data-target="#myModal">Agregar</button>
                     </div>
                   </div>
                 </div>
               {%endfor%}
               </div>
+              <a id="aux" href=""></a>
+
             </div>
         </div>
     </div>
@@ -47,17 +48,28 @@
         <h3 class="modal-title">Debe asignar un medicamento a esta enfermedad</h3>
       </div>
       <div class="modal-body">
-        <select class="form-control" name = "selecEnf">
-          <option value=""></option>
+        <!-- <select class="form-control" name = "selecEnf"> -->
+          <!-- <option value=""></option> -->
           {%for fm in medFar%}
-          <option value="{{e.id}}">{{fm.idmedicamento.nombreComercial}}</option>
+          <div class="col-sm-7 col-md-4">
+            <div class="thumbnail">
+              <!-- <img src="..." alt="..."> -->
+              <div class="caption">
+                <h4><b>{{fm.idmedicamento.nombreGenerico}}</b></h4>
+                <p>{{fm.idmedicamento.nombreComercial}}</p>
+                <p>{{fm.idmedicamento.dosis}}</p>
+                <p>{{m.viaAplicacion}}</p>
+                <button type="button" onclick="redireccione({{Farmacia.id}},{{fm.idmedicamento.id}})" class="btn btn-primary hrff" name="button">Agregar</button>
+                <!-- <a id = "hrff" name="hrff" href="" onclick="redireccione({{Farmacia.is}},{{fm.idmedicamento.id}})" class="btn btn-primary hrff">Agregar</a> -->
+              </div>
+            </div>
+          </div>
+          <!-- <option value="{{e.id}}">{{fm.idmedicamento.nombreComercial}}</option> -->
           {%endfor%}
-        </select><br><br>
+        <!-- </select><br><br> -->
         <button type="button" class="btn btn-info" data-dismiss="modal">Cancelar</button>
-        <a href="#" id="hrefC" class="btn btn-danger">Estoy seguro</a>
       </div>
     </div>
-
   </div>
 </div>
 

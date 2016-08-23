@@ -12,8 +12,9 @@
             </div>
             <div class="panel-body">
               <div class="row">
-                <center><h3>Seleccione un medicamento, en caso de que no exista puede crearlo dando click <a href="/regMed?id={{Farmacia.id}}">Aquí</a></h3></center>
-                {%for m in M %}
+                <center><h3>Seleccione un medicamento para agregar a {{Enfermedad.nombre}}, en caso de que no encuentre el medicamento puede agregarlo dando click <a href="/agregarMed2?id={{Farmacia.id}}">Aquí</a></h3></center>
+                {{mensaje}}
+                {%for m in MEF %}
                 <div class="col-sm-7 col-md-4">
                   <div class="thumbnail">
                     <!-- <img src="..." alt="..."> -->
@@ -22,7 +23,7 @@
                       <p>{{m.nombreGenerico}}</p>
                       <p>{{m.dosis}}</p>
                       <p>{{m.viaAplicacion}}</p>
-                      <p><a href="/agregarMed?idF={{Farmacia.id}}&idM={{m.id}}" class="btn btn-primary" role="button">Agregar</a></p>
+                      <p><a href="/agregarMedEnfFarmPass?idm={{m.id}}&ide={{Enfermedad.id}}&idf={{Farmacia.id}}" class="btn btn-primary" role="button">Agregar</a></p>
                     </div>
                   </div>
                 </div>

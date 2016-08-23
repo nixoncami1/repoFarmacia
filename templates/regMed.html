@@ -9,14 +9,6 @@
             <table>
                 {{ form }}
             </table><br>
-            <div class="col-md-4">
-              <select class="form-control" name = "selecEnf">
-                <option value=""></option>
-                {%for e in Enfermedad%}
-                <option value="{{e.id}}">{{e.nombre}}</option>
-                {%endfor%}
-              </select><br><br>
-            </div>
             <button type="submit" class="btn btn-primary">Registrar</button>
             <a href="../farmaceutico" class="btn btn-danger">Atras</a>
         </form>

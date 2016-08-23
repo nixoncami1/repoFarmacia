@@ -1,7 +1,7 @@
 {%extends "master.html"%}
 {%block contenido%}
     <div class="row">
-        <div class="col-md-3 col-sm-offset-5">
+        <div class="col-md-3 col-sm-offset-4">
             <div class="page-header">
                 <h2>Registro Farmacia</h2>
             </div>
@@ -14,5 +14,31 @@
                 <a href="../farmaceutico" class="btn btn-danger">Atras</a>
             </form>
         </div>
+        <div class="col-md-4" id="pony" style="width: 500px; height: 500px;">
     </div>
+    <script type="text/javascript">
+    $(document).ready(function(){
+      map = new GMaps({
+        div: '#pony',
+        lat: -4.008516,
+        lng: -79.204857,
+        zoom: 17,
+        click: function(e) {
+          var lat = e.latLng.lat();
+          var lng = e.latLng.lng();
+          $('#id_latitud').attr("value",lat);
+          $('#id_longitud').attr("value",lng);
+          map.removeMarkers();
+          map.addMarker({
+            lat: lat,
+            lng: lng,
+            title: 'Lima',
+            click: function(e) {
+              alert('You clicked in this marker');
+            }
+          });
+      }
+      });
+    });
+    </script>
 {%endblock%}

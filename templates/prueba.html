@@ -1,0 +1,20 @@
+
+<div class="row">
+        <!-- <select class="form-control" name = "selecEnf"> -->
+          <!-- <option value=""></option> -->
+          {%for fm in Medicamento%}
+          <div class="col-sm-7 col-md-4">
+            <div class="thumbnail">
+              <!-- <img src="..." alt="..."> -->
+              <div class="caption">
+                <h4><b>{{fm.idmedicamento.nombreGenerico}}</b></h4>
+                <p>{{fm.idmedicamento.nombreComercial}}</p>
+                <p>{{fm.idmedicamento.dosis}}</p>
+                <p>{{m.viaAplicacion}}</p>
+                <a href="/agregarMedEnfFarmNuevo?idm={{fm.idmedicamento.id}}&ide={{Enfermedad.id}}&idf={{Farmacia.id}}" class="btn btn-primary">Agregar</a>
+              </div>
+            </div>
+          </div>
+          <!-- <option value="{{e.id}}">{{fm.idmedicamento.nombreComercial}}</option> -->
+          {%endfor%}
+</div>

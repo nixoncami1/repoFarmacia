@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 import json as simplejson
 import json
 
@@ -97,27 +98,20 @@ def regMed(request):
             Medicamento.viaAplicacion = viaAplicacion
             Medicamento.save()
 
-            Enfermedad = enfermedad.objects.get(id = request.POST['selecEnf'])
-            MedEnf = medicamento_enfermedad()
-            MedEnf.idmedicamento = Medicamento
-            MedEnf.idenfermedad = Enfermedad
-            MedEnf.save()
-
-            Farmacia = farmacia.objects.get(id = request.GET['id'])
+            Farmaci = farmacia.objects.get(id = request.GET['id'])
             FarMed = farmacia_medicamento()
             FarMed.idmedicamento = Medicamento
-            FarMed.idfarmacia = Farmacia
+            FarMed.idfarmacia = Farmaci
             FarMed.save()
             return redirect('../farmaceutico')
 
     else:
+
         form = RegistroMedicamento()
-        Enfermedad = enfermedad.objects.filter(activo = True)
         Farmacia = farmacia.objects.get(id = request.GET['id'])
     context = {
         'form': form,
-        'Farmacia': Farmacia,
-        'Enfermedad': Enfermedad
+        'Farmacia': Farmacia
     }
     return render(request, 'regMed.html', context)
 
@@ -227,15 +221,23 @@ def inicioFarmMed(request):
     up = UserProfile.objects.get(user = usuario)
     Farmacia = farmacia.objects.get(id=request.GET['id'])
     medFar = farmacia_medicamento.objects.filter(idfarmacia = Farmacia, activo = True)
+
     Medicamento = medicamento.objects.filter(activo = True)
     Enfermedad = enfermedad.objects.filter(activo = True)
     ME = []
     E = []
     for mf in medFar:
-        obme = medicamento_enfermedad.objects.get(idmedicamento = mf.idmedicamento)
-        ME.append(obme)
-        if obme.idenfermedad not in E:
-            E.append(enfermedad.objects.get(id = obme.idenfermedad.id))
+        try:
+            obme = medicamento_enfermedad.objects.filter(idmedicamento = mf.idmedicamento)
+        except ObjectDoesNotExist:
+            pass
+        for ob in obme:
+            ME.append(ob)
+
+    for f in ME:
+        ob = enfermedad.objects.get(id = f.idenfermedad.id)
+        if ob not in E:
+            E.append(ob)
 
     context = {
         'Farmacia':Farmacia,
@@ -292,13 +294,20 @@ def agregarEnf(request):
     medFar = farmacia_medicamento.objects.filter(idfarmacia = Farmacia, activo = True)
     E = []
     En = []
+    ME = []
     for mf in medFar:
-        obme = medicamento_enfermedad.objects.get(idmedicamento = mf.idmedicamento)
-        if obme.idenfermedad not in E:
-            E.append(enfermedad.objects.get(id = obme.idenfermedad.id))
-    for e in enfermedad.objects.all():
-        if e not in E:
-            En.append(e)
+        obme = medicamento_enfermedad.objects.filter(idmedicamento = mf.idmedicamento)
+        for ob in obme:
+            ME.append(ob)
+
+    for f in ME:
+        ob = enfermedad.objects.get(id = f.idenfermedad.id)
+        if ob not in E:
+            E.append(ob)
+    for f in Enfermedad:
+        if f not in E:
+            En.append(f)
+
     context = {
         'E': E,
         'En': En,
@@ -315,6 +324,15 @@ def eliminarM(request):
     MedFar = farmacia_medicamento.objects.get(idmedicamento = Medicamento, idfarmacia = Farmacia )
     MedFar.delete()
     return redirect('/inicioFarm?id='+str(Farmacia.id))
+
+@login_required(login_url='/')
+def eliminarME(request):
+    Medicamento = medicamento.objects.get(id =request.GET['idm'])
+    Enfermedad = enfermedad.objects.get(id = request.GET['ide'])
+    Farmacia = farmacia.objects.get(id = request.GET['idf'])
+    MedFar = farmacia_medicamento.objects.get(idmedicamento = Medicamento, idfarmacia = Farmacia )
+    MedFar.delete()
+    return redirect('/inicioEnf?ide='+str(Enfermedad.id)+"&idf="+str(Farmacia.id))
     # html = "<html><body>It is now %s.</body></html>" % Medicamento.id
     # return HttpResponse(html)
 
@@ -338,6 +356,76 @@ def agregarMed2(request):
         'MedFar':MedFar
     }
     return render(request, 'agregarMed2.html', context)
+
+@login_required(login_url='/')
+def agregarMedEnfFarm(request):
+    Farmacia = farmacia.objects.get(id = request.GET['idf'])
+    Enfermedad = enfermedad.objects.get(id = request.GET['ide'])
+    Medicamento = medicamento.objects.order_by('nombreComercial')
+    MEF = []
+    FM = []
+    mensaje = ""
+    try:
+        medEnf = medicamento_enfermedad.objects.filter(idenfermedad = Enfermedad)
+        MedFar = farmacia_medicamento.objects.filter(idfarmacia = Farmacia)
+        for mf in MedFar:
+            FM.append(medicamento.objects.get(id = mf.idmedicamento.id))
+
+
+        for fm in FM:
+            b = False
+            for me in medEnf:
+                if me.idmedicamento.id == fm.id:
+                    b = True
+            if b == False:
+                MEF.append(fm)
+
+    except ObjectDoesNotExist:
+        pass
+    context = {
+        'Farmacia': Farmacia,
+        'Enfermedad': Enfermedad,
+        'Medicamento': Medicamento,
+        'MEF': MEF
+    }
+    return render(request, 'agregarMedEnfFarm.html', context)
+
+@login_required(login_url='/')
+def agregarMedEnfFarmPass(request):
+    Farmacia = farmacia.objects.get(id = request.GET['idf'])
+    Enfermedad = enfermedad.objects.get(id = request.GET['ide'])
+    Medicamento = medicamento.objects.get(id = request.GET['idm'])
+    medEnf = medicamento_enfermedad()
+    medEnf.idenfermedad = Enfermedad
+    medEnf.idmedicamento = Medicamento
+    medEnf.save()
+
+    return redirect('/inicioEnf?ide='+str(Enfermedad.id)+"&idf="+str(Farmacia.id))
+
+@login_required(login_url='/')
+def prueba(request):
+    Farmacia = farmacia.objects.get(id = request.GET['idf'])
+    Enfermedad = enfermedad.objects.get(id = request.GET['ide'])
+    Medicamento = farmacia_medicamento.objects.get(idfarmacia = Farmacia)
+
+    context = {
+        'Farmacia': Farmacia,
+        'Enfermedad': Enfermedad,
+        'Medicamento': Medicamento
+    }
+    return render(request, 'prueba.html', context)
+
+@login_required(login_url='/')
+def agregarMedEnfFarmNuevo(request):
+    Farmacia = farmacia.objects.get(id = request.GET['idf'])
+    Enfermedad = enfermedad.objects.get(id = request.GET['ide'])
+    Medicamento = medicamento.objects.get(id = request.GET['idm'])
+    medEnf = medicamento_enfermedad()
+    medEnf.idenfermedad = Enfermedad
+    medEnf.idmedicamento = Medicamento
+    medEnf.save()
+
+    return redirect("/inicioFarmMed?id="+str(Farmacia.id))
 
 def list(request):
     medicamentos_enfermedades = medicamento_enfermedad.objects.all()

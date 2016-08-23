@@ -20,7 +20,7 @@
                       <p>{{m.idmedicamento.nombreGenerico}}</p>
                       <p>{{m.idmedicamento.dosis}}</p>
                       <p>{{m.idmedicamento.viaAplicacion}}</p>
-                      <button type="button" onclick="ponerhref({{m.idmedicamento.id}},{{Farmacia.id}})" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Eliminar</button>
+                      <button type="button" onclick="ponerhrefEM({{m.idmedicamento.id}},{{Farmacia.id}},{{Enfermedad.id}})" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Eliminar</button>
                     </div>
                   </div>
                 </div>
@@ -31,7 +31,7 @@
     </div>
     <div class="col-md-2">
       <a href="../inicioFarmMed?id={{Farmacia.id}}" class="btn btn-success">Regresar</a><br><br>
-      <a href="/agregarMed2?id={{Farmacia.id}}" class="btn btn-success">Agregar</a><br><br>
+      <a href="/agregarMedEnfFarm?idf={{Farmacia.id}}&ide={{Enfermedad.id}}" class="btn btn-success">Agregar</a><br><br>
       <a href="/salir" class="btn btn-danger">Salir</a>
     </div>
 </div>
@@ -49,7 +49,7 @@
       </div>
       <div class="modal-body">
         <button type="button" class="btn btn-info" data-dismiss="modal">Cancelar</button>
-        <a href="#" id="hrefC" class="btn btn-danger">Estoy seguro</a>
+        <a id="hrefelEM" href="#" id="hrefC" class="btn btn-danger">Estoy seguro</a>
       </div>
     </div>
 
